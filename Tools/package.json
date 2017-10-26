@@ -1,0 +1,61 @@
+{
+  "name": "Life",
+  "description": "Center for Life",
+  "version": "1.0.1",
+  "author": "CoalFace",
+  "homepage": "http://life.org.uk/",
+  "license": "MIT",
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "keywords": [
+    "task",
+    "async",
+    "cli",
+    "minify",
+    "uglify",
+    "cssmin",
+    "build",
+    "lodash",
+    "unit",
+    "test",
+    "qunit",
+    "nodeunit",
+    "server",
+    "init",
+    "scaffold",
+    "make",
+    "jake",
+    "tool"
+  ],
+  "dependencies": {
+    "coffee-script": "~1.10.0",
+    "dateformat": "~1.0.12",
+    "eventemitter2": "~0.4.13",
+    "exit": "~0.1.1",
+    "findup-sync": "~0.3.0",
+    "glob": "~7.0.0",
+    "grunt-cli": "~1.2.0",
+    "grunt-known-options": "~1.1.0",
+    "grunt-legacy-log": "~1.0.0",
+    "grunt-legacy-util": "~1.0.0",
+    "grunt-remove-logging": "^0.2.0",
+    "iconv-lite": "~0.4.13",
+    "js-yaml": "~3.5.2",
+    "minimatch": "~3.0.2",
+    "nopt": "~3.0.6",
+    "path-is-absolute": "~1.0.0",
+    "rimraf": "~2.2.8"
+  },
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-closure-tools": "^1.0.0",
+    "grunt-contrib-cssmin": "^2.2.0",
+    "grunt-contrib-uglify": "^3.0.1",
+    "grunt-critical": "^0.3.0",
+    "grunt-css-purge": "0.0.4",
+    "grunt-path": "0.0.2",
+    "grunt-text-replace": "^0.4.0",
+    "matchdep": "^1.0.1"
+  }
+}

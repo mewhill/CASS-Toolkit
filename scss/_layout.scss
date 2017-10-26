@@ -1,0 +1,497 @@
+﻿//Each bookmark in this file is preceded by "=="
+
+//=Typogrpahy -- Default typography settings
+//==CKeditor -- styles content added via CKeditor (or similar)
+
+//==Layout Components -- Offset/Columns/Flex etc
+
+//==bgcover -- sets the background-image: url(...) style to fill container
+//includes background-position variants and ".contain" as alternative to background-size: cover style
+
+//==Form_Tooltips -- Assisstive tooltip alerts for form feedback
+//==Form_sideBySide -- Modifies the input__wrap to set the label/input to be inline and flexible
+
+//=Typogrpahy
+blockquote, .quote {
+
+	p {
+		display: inline;
+	}
+
+	p:before, p:after {
+		font-family: $Serif;
+	}
+
+	p:before {
+		content: '\0201C';
+	}
+
+	p:after {
+		content: '\0201D';
+	}
+}
+
+u {
+	text-decoration: none;
+	border-bottom: 1px solid;
+}
+
+h1, h2, h3, h4, .h1, .h2, .h3, .h4, p {
+	position: relative;
+}
+
+.h1, .h2, .h3 {
+	display: block;
+}
+
+//==CKeditor
+.content_wrap {
+
+	ul li {
+		list-style: disc;
+	}
+
+	ol li {
+		list-style: decimal;
+	}
+
+	ol ol li {
+		list-style: lower-alpha;
+	}
+
+	ul ul li {
+		list-style: circle;
+	}
+
+	blockquote {
+		font-style: italic;
+		padding: 0 20px;
+	}
+}
+
+//==Layout Components
+[class*=col_], [class*=col-] {
+	display: block;
+	width: 100%;
+	float: left;
+}
+
+//Margin assigned to inner_col (child of column)
+//e.g. <div class="col_5"><div class="inner_col">....
+.offset .inner_col {
+	margin: $offset+px;
+}
+
+//offset reverses margin setting to sit the wrapper flush within ".container" width
+.offset {
+	margin: -$offset+px;
+
+	//apply float clearfix
+	&:after {
+		@extend %clearfix;
+	}
+}
+
+//Feature query
+//Checks if the browser can used specific property then executes CSS if TRUE
+@supports (display: flex) {
+	.flex {
+		display: -ms-flex;
+		display: -webkit-flex;
+		display: flex;
+		flex-wrap: wrap;
+
+		//changes horizontal STACKING order
+		&.row--reverse {
+			flex-direction: row-reverse;
+		}
+	}
+	
+	.flex [class*=col_], .flex [class*=col-] {
+		float: none;
+	}
+}
+
+.no--margin {
+	.container, .offset, .inner_col {
+		margin: auto;
+	}
+}
+
+.mid--align {
+
+	[class*=col_] {
+		display: inline-block;
+		float: none;
+		vertical-align: middle;
+		margin-left: -2px;
+		margin-right: -2px;
+	}
+}
+
+.ib {
+	[class*=col_] {
+		display: inline-block;
+		float: none;
+		vertical-align: top;
+		margin-left: -2px;
+		margin-right: -2px;
+	}
+}
+//==bgcover
+.bgcover {
+	background: {
+		repeat: no-repeat;
+		position: center top;
+	}
+
+	-webkit-background-size: cover;
+	background-size: cover;
+	display: block;
+
+	&.bg--lt {
+		background-position: left top;
+	}
+
+	&.bg--lc {
+		background-position: left center;
+	}
+
+	&.bg--lb {
+		background-position: left bottom;
+	}
+
+	&.bg--cc {
+		background-position: center;
+	}
+
+	&.bg--cb {
+		background-position: center bottom;
+	}
+
+	&.bg--rt {
+		background-position: right top;
+	}
+
+	&.bg--rc {
+		background-position: right center;
+	}
+
+	&.bg--rb {
+		background-position: right bottom;
+	}
+
+	&.contain {
+		-webkit-background-size: contain;
+		-moz-background-size: contain;
+		background-size: contain;
+	}
+}
+
+.background-size-polyfill img {
+	-ms-interpolation-mode: bicubic;
+}
+//==Form_Tooltips
+.frm_tip {
+	position: absolute;
+	padding: 6px 10px;
+	z-index: 10;
+	background-color: $clr-grey-light;
+	line-height: 1.2;
+
+	&:before {
+		content: '';
+		width: 0;
+		height: 0;
+		border-style: solid;
+		position: absolute;
+		border-color: transparent;
+	}
+
+
+	&.pos--top, &.pos--btm {
+		left: 50%;
+		-webkit-transform: translateX(-50%);
+		transform: translateX(-50%);
+
+
+		&:before {
+			left: 50%;
+			margin-left: -8px;
+		}
+	}
+
+	&.pos--left, &.pos--right {
+		top: 50%;
+		-webkit-transform: translateY(-50%);
+		transform: translateY(-50%);
+		min-width: 15rem;
+
+		&:before {
+			top: 50%;
+			margin-top: -8px;
+		}
+	}
+
+	&.pos--top {
+		bottom: 100%;
+		margin-bottom: 10px;
+
+		&:before {
+			border-width: 6px 6px 0 6px;
+			top: 100%;
+			border-top-color: $clr-grey-light;
+		}
+
+		.is-error &:before {
+			border-top-color: $clr-form-red;
+		}
+
+		.is-warning &:before {
+			border-top-color: $clr-form-orange;
+		}
+
+		.is-complete &:before {
+			border-top-color: $clr-form-green;
+		}
+	}
+
+	&.pos--btm {
+		top: 100%;
+		margin-top: 10px;
+
+		&:before {
+			border-width: 0 6px 6px 6px;
+			bottom: 100%;
+			border-bottom-color: $clr-grey;
+		}
+
+		.is-error &:before {
+			border-bottom-color: $clr-form-red;
+		}
+
+		.is-warning &:before {
+			border-bottom-color: $clr-form-orange;
+		}
+
+		.is-complete &:before {
+			border-bottom-color: $clr-form-green;
+		}
+	}
+
+	&.pos--left {
+		right: 100%;
+		margin-right: 10px;
+
+		&:before {
+			border-width: 6px 0 6px 6px;
+			left: 100%;
+			border-left-color: $clr-grey;
+		}
+
+		.is-error &:before {
+			border-left-color: $clr-form-red;
+		}
+
+		.is-warning &:before {
+			border-left-color: $clr-form-orange;
+		}
+
+		.is-complete &:before {
+			border-left-color: $clr-form-green;
+		}
+	}
+
+	&.pos--right {
+		left: 100%;
+		margin-left: 10px;
+
+		&:before {
+			border-width: 6px 6px 6px 0;
+			right: 100%;
+			border-right-color: $clr-grey;
+		}
+
+		.is-error &:before {
+			border-right-color: $clr-form-red;
+		}
+
+		.is-warning &:before {
+			border-right-color: $clr-form-orange;
+		}
+
+		.is-complete &:before {
+			border-right-color: $clr-form-green;
+		}
+	}
+
+	.input--complete & {
+		background-color: $clr-form-green;
+		color: white;
+	}
+
+	.input--warning & {
+		background-color: $clr-form-orange;
+		color: white;
+	}
+
+	.input--error & {
+		background-color: $clr-form-red;
+		color: white;
+		display: block;
+	}
+}
+
+.form__lbl {
+	display: block;
+}
+
+//==Form_sideBySide
+.form--sbs {
+
+	.form__lbl {
+		display: block;
+	}
+
+	.input__wrap, .select {
+		display: table-cell;
+		vertical-align: middle;
+	}
+
+	.input__wrap {
+		width: 100%;
+	}
+
+	@include bp(tb, less) {
+		.lbl, .input_wrap, .select {
+			display: inline-block;
+			left: 0;
+		}
+
+		.lbl {
+			width: 100%;
+		}
+	}
+	//=End TB-LESS
+	@include bp(tb) {
+		//table-layout: fixed;
+		display: table;
+		border-spacing: 10px 0;
+		margin-left: -10px;
+		margin-right: -10px;
+
+		&.input-sml, &.input-split {
+			table-layout: auto;
+			display: block;
+			margin-left: auto;
+			margin-right: auto;
+			border-spacing: 0;
+		}
+
+		.lbl {
+			display: table-cell;
+			vertical-align: middle;
+			min-width: 200px;
+		}
+
+
+		&.input--split .lbl {
+			position: relative;
+		}
+
+		&.input--split .input_wrap {
+			display: table-cell;
+		}
+	}
+	//=End TB
+}
+
+.input--split {
+	border-collapse: separate;
+	border-spacing: 1rem 0;
+
+	.input_wrap {
+		display: inline-block;
+		vertical-align: middle;
+
+		&:after {
+			content: '';
+			display: block;
+		}
+	}
+
+	@include bp(tb, less) {
+		border-spacing: 0;
+	}
+}
+
+.ico--right {
+	direction: rtl;
+
+	.ico, .input-txt {
+		direction: ltr;
+	}
+}
+
+
+.form--ico {
+	display: table-cell;
+	vertical-align: middle;
+	text-align: center;
+}
+
+.form-state {
+	position: absolute;
+	text-align: center;
+	right: 0;
+	top: 0;
+	height: 100%;
+	@include iconMiddle;
+
+	.input--warning & {
+		color: $clr-form-orange;
+	}
+
+	.input--error & {
+		color: $clr-form-red;
+	}
+
+	.input--complete & {
+		color: $clr-form-green;
+	}
+}
+
+.fade--in {
+	opacity: 0;
+	@include anim(450ms, (opacity));
+
+	&.loaded {
+		opacity: 1;
+	}
+}
+
+@include columnOffset();
+
+@include bp(mb) {
+	@include columnOffset(mb);
+}
+
+@include bp(mblge) {
+	@include columnOffset(mblge);
+}
+
+@include bp(tb) {
+	@include columnOffset(tb);
+}
+
+@include bp(ds) {
+	@include columnOffset(ds);
+}
+
+@include bp(ds-mid) {
+	@include columnOffset(ds-mid);
+}
+
+@include bp(lg) {
+	@include columnOffset(lg);
+}

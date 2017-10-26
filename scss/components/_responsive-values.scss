@@ -1,0 +1,118 @@
+﻿$offset: 10;
+
+@mixin columnOffset($specific: null) {
+	//Dynamic Column Generator:
+	//colGenerator(number of columns, breakpoint specific, isBase = should always be true for 12 columns
+	//Having "isBase" value will generate classes without any other string prefix (col_1, col_2 etc)
+	//Without "isBase" value, the mixin will add the "$size" value to the column name output (col-5_1, col-7_3 etc)
+	@include colGenerater(12, $specific, "isBase");
+
+	@include colGenerater(5, $specific);
+	@include colGenerater(7, $specific);
+
+	@if $specific{
+		$specific: $specific + "_";
+	}
+	//Generate Hide/Show classes (.hide, .ds_hide, .tb_show etc) based on input of $specific value
+	*.#{$specific}hide {
+		display: none;
+	}
+
+	*.#{$specific}show {
+		display: block;
+	}
+
+	*.#{$specific}ib_show {
+		display: inline-block;
+	}
+}
+
+@mixin colGenerater($size, $specific, $isBase: null) {
+
+	//As Base setting (for without "isBase" value)
+	//Set $col-size to string including the $size value
+
+	//e.g. $size = 5, $col-size = "-5_"
+	$col-size: "-" + $size + "_";
+	$col-width: null;
+	
+	//if $specific value added (e.g. "ds")
+	//Add $specific value with "_" prefix (e.g. "_ds")
+		@if $specific{
+			$specific: "_" + $specific;
+		}
+
+	//Iterate through as many times as specified in $size (eg 12 = 12 iterations)
+	//set index of iteration to $j
+	@for $j from 1 through $size {
+
+		@if $isBase != null {
+			$col-size: "_";
+		}
+
+		//$col-width: calculates the column size based on the $size value and $j value
+		//e.g. $j = 2, $size = 5
+		//(100/$size = 100/5 = 20)*$j = 20*2 = 40
+		$col-width: #{(100/$size)*$j};
+
+		.col#{$specific}#{$col-size}#{$j} { //write class name based on column grid and size
+			//concantenate $col-width with "%" string
+			//($col-width = 40) + "%" = 40%
+			width: unquote($col-width + '%');
+		}
+	}
+}
+
+//variables for media query breakpoints (px based which will be converted to EMs)
+//http://blog.cloudfour.com/the-ems-have-it-proportional-media-queries-ftw/
+//DO CHANGE THESE VALUES to make site fit the content best
+$bp-mobile: 420;
+$bp-mobile-lge: 600;
+$bp-tablet: 720;
+$bp-desktop: 960;
+$bp-desktop-mid: 1100;
+$bp-larger: 1300;
+
+//Set KEY:VALUE map
+//Each KEY:VALUE pair is referenced through the framework when declaring media queries per componenet
+//e.g. @mixin bp(ds), @mixin bp(tb) etc...
+$bp-map: ( 
+	"mb": $bp-mobile, 
+	"mblge": $bp-mobile-lge, 
+	"tb": $bp-tablet, 
+	"ds": $bp-desktop, 
+	"ds-mid": $bp-desktop-mid, 
+	"lg": $bp-larger 
+);
+
+//bp(breakpoint string, range for media query if not wanting min-width by default)
+
+//EXAMPLES
+//bp(ds, less) = @media (max-width: "desktop-sizing"+em)
+//bp(tb) = @media (min-width: "tablet-sizing"+em)
+//bp(tb, ds) = @media (min-width: "table-sizing"+em) and (max-width: "desktop-sizing"+em)
+@mixin bp($bp, $range: null) {
+	
+	@if map-has-key($bp-map, $bp) {
+		$newWidth: calc-divide(map-get($bp-map, $bp), 16);
+
+		@if $range == null {
+			@media all and (min-width: unquote($newWidth + 'em')) {
+				@content;
+			}
+		}
+		@else {
+			@if $range == "less" {
+				//max-width should always be "1px" under the next min-width breakpoint to prevent crossover styling
+				@media all and (max-width: calc-minus($newWidth,0.01) + em) {
+					@content;
+				}
+			}
+			@else {
+				@media all and (min-width: unquote($newWidth + 'em')) and (max-width: calc-minus($newWidth,0.01) + em) {
+					@content;
+				}
+			}
+		}
+	}
+}

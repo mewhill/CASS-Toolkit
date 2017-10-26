@@ -1,0 +1,68 @@
+﻿//$clr-* Colour value settings
+$clr-body-font: #111;
+$clr-body-bg: #fff;
+
+$clr-primary: #0039a6;
+$clr-primary-light: lighten($clr-primary, 20%);
+$clr-primary-dark: darken($clr-primary, 20%);
+
+$clr-secondary: #0039a6;
+$clr-secondary-light: lighten($clr-secondary, 20%);
+$clr-secondary-dark: darken($clr-secondary, 20%);
+
+$clr-grey-light: #d2d7db;
+$clr-grey: #E8EBED;
+
+$clr-blue: #1E8BC3;
+$clr-pink: #de436a;
+$clr-orange: #ff7f00;
+$clr-orange-dark: #B35800;
+$clr-green: #008c69;
+$clr-green-dark: #005A41;
+$clr-red: #b32f00;
+$clr-yellow: #fdc100;
+$clr-purple: #A2518B;
+
+//Form states
+$clr-form-green: #26A65B;
+$clr-form-orange: #F5AB35;
+$clr-form-red: #D91E18;
+
+$clr-facebook: #3b5998;
+$clr-linkedin: #0077b5;
+$clr-youtube: #cd201f;
+$clr-twitter: #55acee;
+$clr-pinterest: #bd081c;
+$clr-google-plus: #dc4e41;
+$clr-skype: #00aff0;
+$clr-flickr: #0063dc;
+$clr-instagram: #3f729b;
+
+//Font Families/Sizes
+//$family-* = Font Family settings
+$family-fallback: Helvetica Neue, Helvetica Neue, Helvetica, Arial, sans-serif;
+$SansSerif: $family-fallback;
+$Serif: Georgia, serif;
+
+$family-body: $SansSerif;
+$family-head: $SansSerif;
+
+//$fs-* = Font size settings
+$fs-body: 14px; //$fs- font-size
+$lh-body: 22px; //$lh- line-height
+
+//=header1
+$fs-h1: 48px;
+$lh-h1: 51px;
+
+//=header2
+$fs-h2: 32px;
+$lh-h2: 35px;
+
+//=header3
+$fs-h3: 26px;
+$lh-h3: 29px;
+
+//=header4
+$fs-h4: 21px;
+$lh-h4: 24px;

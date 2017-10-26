@@ -1,0 +1,1 @@
+$("a.fancy-btn").each(function(){$(this).addClass("loaded")}),$("a.fancy-btn").fancybox({maxWidth:800,maxHeight:600,height:"100%",fitToView:!1,width:"100%",autoSize:!1,type:"iframe",closeBtn:!0,scrolling:"no",padding:0}),calcHref=$(".calc").attr("data-link"),$(".calc").attr("href",calcHref);

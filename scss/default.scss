@@ -1,0 +1,200 @@
+﻿@import 'components/mixin.scss';
+@import 'components/type-colour.scss';
+@import 'components/responsive-values.scss';
+@import 'styles/normalise';
+
+//Include base Layout framework
+@import 'layout.scss';
+
+//Each bookmark in this file is preceded by "=="
+
+//==Layout Components -- contaiers/rows
+//==CKeditor -- styles content added via CKeditor (or similar)
+//==Custom_List -- creates custom listing with specified bullet style
+//==Style Components -- styles compartmentalised into own files (e.g. form/footer/buttons...)
+
+body {
+	font-weight: normal;
+	color: $clr-body-font;
+	font-family: $family-body;
+	font-size: $fs-body;
+	//Lh
+	line-height: LH($lh-body, $fs-body);
+	letter-spacing: 0.03em;
+	//text-rendering: emphasizes rendering speed over legibility and geometric precision when drawing text
+	text-rendering: optimizeLegibility; 
+	-webkit-font-smoothing: antialiased;
+	overflow-y: scroll;
+
+	> form {
+		overflow: hidden;
+	}
+}
+//http://www.intridea.com/blog/2014/5/8/better-font-smoothing-in-chrome-on-mac-os-x
+@media only screen and (-webkit-min-device-pixel-ratio: 1.25), only screen and ( min-device-pixel-ratio: 1.25), only screen and ( min-resolution: 200dpi), only screen and ( min-resolution: 1.25dppx) {
+	body {
+		-webkit-font-smoothing: subpixel-antialiased;
+	}
+}
+
+
+h1, h2, h3, h4, .h1, .h2, .h3, .h4 {
+	position: relative;
+	font-family: $family-body;
+	display: block;
+
+	small {
+		font-size: .6em;
+		color: lighten($clr-body-font, 15%);
+		font-weight: 100;
+	}
+
+	p + &, ul + &, ol + & {
+		margin-top: 2rem;
+	}
+}
+
+h1, .h1 {
+	font-size: $fs-h1;
+	line-height: LH($lh-h1, $fs-h1);
+}
+
+h2, .h2 {
+	font-size: $fs-h2;
+	line-height: LH($lh-h2, $fs-h2);
+}
+
+h3, .h3 {
+	font-size: $fs-h3;
+	line-height: LH($lh-h3, $fs-h3);
+}
+
+h4, .h4 {
+	font-size: $fs-h4;
+	line-height: LH($lh-h4, $fs-h4);
+}
+
+//==Layout Components
+.section_row {
+	padding-top: 20px;
+	padding-bottom: 20px;
+	clear: both;
+
+	.no--margin + & {
+		padding-top: 0;
+	}
+
+	&[class*=bg--], &[class*=bg--] + & {
+		padding-top: 20px;
+	}
+
+	.cta_wrap {
+		padding-top: 20px;
+		padding-bottom: 20px;
+	}
+}
+.container {
+	width: auto;
+	position: relative;
+	clear: both;
+	margin-left: 20px;
+	margin-right: 20px;
+	max-width: $bp-larger +px;
+
+	@include bp(lg) {
+		margin-left: auto;
+		margin-right: auto;
+	}
+}
+
+//==CKeditor
+.content_wrap {
+
+	& + & {
+		margin-top: 20px;
+	}
+
+	li + li {
+		margin-top: .25em;
+	}
+
+	li {
+		margin-left: 1.25em;
+		line-height: 1.2;
+	}
+
+	//Pattern primers where elements follow the other in the DOM tree
+	p + p, p + ul, p + ol,
+	ul + ul, ul + p, ul + ol,
+	ol + ol, ol + ul, ol + p {
+		margin-top: 10px;
+	}
+
+	a {
+		color: $clr-primary;
+
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+
+	table {
+		width: 100%;
+		border: 1px solid #333;
+
+		td {
+			vertical-align: middle;
+			border-right: 1px solid #333;
+			border-bottom: 1px solid #333;
+			padding: 5px;
+		}
+	}
+
+	table + table {
+		margin-top: 20px;
+	}
+}
+
+//==Custom_List
+.list-custom {
+	ul li, ol li {
+		list-style: none;
+	}
+
+	li + li {
+		margin-top: .5rem;
+	}
+
+	li {
+		margin-left: 2.25em;
+		position: relative;
+		line-height: 1.2;
+
+		&:before {
+			position: absolute;
+			right: 100%;
+			margin-right: .5em;
+			font-size: 1.5em;
+			top: 0;
+			line-height: .75;
+			font-family: Arial;
+		}
+	}
+
+	li {
+		&:before {
+			content: '\0203A'; //http://dev.w3.org/html5/html-author/charref
+			color: $clr-blue;
+		}
+	}
+}
+
+//==Style Components
+@import 'styles/buttons'; // Button/CTA styles
+@import 'styles/form'; //Generic and Custom form styles
+@import 'styles/navigation'; //Global and Sub page Header + Navigational elements
+@import 'styles/footer'; //Global and Sub page Footer elements
+
+//Bolt-on styles when you "need" (want) to add quick fixes
+//example: fl-right = float: right...
+@import 'styles/extra-styles'; 

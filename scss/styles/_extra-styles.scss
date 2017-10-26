@@ -1,0 +1,53 @@
+﻿.rel {
+	position: relative;
+}
+//=Typography
+.txt--cntr {
+	text-align: center;
+}
+
+.txt--left {
+	text-align: left;
+}
+
+.txt--right {
+	text-align: right;
+}
+
+.txt--justify {
+	text-align: justify;
+}
+
+.txt--sml {
+	font-size: .7em;
+}
+
+.caps {
+	text-transform: uppercase;
+}
+//Text colour change
+*.clr-blue {
+	color: $clr-primary;
+}
+
+*.clr-orange {
+	color: $clr-orange;
+}
+
+*.clr-green {
+	color: $clr-green;
+}
+
+.image-cap {
+	font-size: 10px;
+	color: $clr-grey;
+}
+//Hide element visibly but not as "display: none" so it can still be read by screen reader
+.txt_hide {
+	@include hide-text;
+	height: 0;
+	width: 0;
+	margin: 0;
+	padding: 0;
+	position: absolute;
+}

@@ -1,0 +1,356 @@
+﻿@import "responsive-values";
+@import "type-colour";
+@import "extend";
+
+//http://www.sitepoint.com/sass-basics-the-mixin-directive/ explanation of the mixin directive
+
+@mixin linearGradient($top, $bottom) {
+    background: $top; // fallback
+    background: -ms-linear-gradient(top, $top 0%,$bottom 100%); // IE10+
+    background: linear-gradient(to bottom, $top 0%,$bottom 100%); // W3C
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$top', endColorstr='$bottom',GradientType=0 ); //IE6-9
+}
+
+@mixin anim($speed, $type...) {
+    //compile animation CSS with browser prefixes that can take multiple animation types
+    //$val... can take mulitple settings
+    //Usage:
+    //@include anim(250ms, (opacity, colour));
+    //$type should always be within () as it can take multiple settings
+    -webkit-transition-property: $type;
+    transition-property: $type;
+    -webkit-transition-duration: $speed;
+    transition-duration: $speed;
+    -webkit-transition-timing-function: ease-in-out;
+    transition-timing-function: ease-in-out;
+}
+
+@mixin animDelay($delay) {
+    //add delay to CSS animation
+    -webkit-transition-delay: $delay;
+    transition-delay: $delay;
+}
+
+
+@mixin keyframe-setup($settings: null) {
+    -webkit-animation: $settings; // Safari 4+
+    animation: $settings; // IE 10+, Fx 29+
+}
+
+@mixin keyframes($name: null) {
+    @-webkit-keyframes #{$name} {
+        @content;
+    }
+
+    @keyframes #{$name} {
+        @content;
+    }
+}
+
+
+@mixin rotate($degrees) {
+    -webkit-transform: rotate($degrees);
+    -ms-transform: rotate($degrees);
+    transform: rotate($degrees);
+}
+
+@mixin columns($count: null, $width: null, $gap: null) {
+    @if $width != 'null' {
+        -webkit-column-width: $width;
+        -moz-column-width: $width;
+        column-width: $width;
+    }
+
+    @if $count != 'null' {
+        -webkit-column-count: $count;
+        -moz-column-count: $count;
+        column-count: $count;
+    }
+
+    @if $gap != 'null' {
+        -webkit-column-gap: $gap;
+        -moz-column-gap: $gap;
+        column-gap: $gap;
+    }
+}
+
+@mixin z {
+    //handy mixin for tricking the browser to render animations as 3d animations which in turn forces the power of GPU
+    //WARNING: can have an effect on element layering
+    -ms-transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+}
+
+@mixin ib {
+    float: none;
+    display: inline-block;
+    vertical-align: top;
+    margin-left: -2px;
+    margin-right: -2px;
+}
+
+@mixin centreText {
+    //vertically centre elements
+    &:before {
+        height: 100%;
+        content: '';
+    }
+
+    &:before, > * {
+        //remove the gap between inline(-block) elements
+        margin-left: -2px;
+        margin-right: -2px;
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    > * {
+        max-height: 100%;
+        max-width: 100%;
+        height: auto;
+        position: relative;
+    }
+}
+
+@mixin placeholder {
+    //WARNING: will not work if declared as part of "input" styling, must be used on parent that is not a self closing element
+    ::-webkit-input-placeholder {
+        @content
+    }
+
+    :-moz-placeholder {
+        @content
+    }
+
+    ::-moz-placeholder {
+        @content
+    }
+
+    :-ms-input-placeholder {
+        @content
+    }
+}
+
+@mixin placeholderFocus {
+    //WARNING: will not work if declared as part of "input" styling, must be used on parent that is not a self closing element
+    :focus::-webkit-input-placeholder {
+        @content
+    }
+
+    :focus:-moz-placeholder {
+        @content
+    }
+
+    :focus::-moz-placeholder {
+        @content
+    }
+
+    :focus:-ms-input-placeholder {
+        @content
+    }
+}
+
+@mixin hide-text {
+    overflow: hidden;
+    text-indent: -9999em;
+    display: block;
+}
+
+//handy calculations for frequent use such as media query output
+@function calc-minus($first-value, $second-value) {
+    @return $first-value - $second-value
+}
+
+@function calc-add($first-value, $second-value) {
+    @return $first-value + $second-value
+}
+
+@function calc-times($first-value, $second-value) {
+    @return $first-value * $second-value
+}
+
+@function calc-divide($first-value, $second-value) {
+    @return $first-value / $second-value
+}
+
+
+//http://hugogiraudel.com/2013/03/18/ultimate-rem-mixin/
+@function parseInt($n) {
+    @return $n / ($n * 0 + 1);
+}
+
+//based on REM mixin but modified to only return REM value when using a $variable which has a pixel based unit
+//such as those stored in _type-colour.scss
+@mixin convertPX($property, $values) {
+    $rem: ();
+    $px: ();
+
+    @each $value in $values {
+
+        @if $value == 0 or $value == auto {
+            $px: append($px, $value);
+            $rem: append($rem, $value);
+        }
+
+        @else {
+            $unit: unit($value);
+            $val: parseInt($value);
+
+            @if $unit == "px" {
+                $rem: append($rem, ($val / 10 + rem));
+            }
+        }
+    }
+
+    #{$property}: $rem;
+}
+
+@function EM($set1, $set2) {
+    //returns what the first argument is in relational to the second value which should always be a font-size
+    //use for relational sizing of line-height and padding/margin around elements where typography
+    //font-sizes are likely change through media query
+    $val1: parseInt($set1);
+    $val2: parseInt($set2);
+    $em: decimal-round(calc-divide($val1, $val2),2) + em;
+
+    @return $em;
+}
+
+@function LH($set1, $set2) {
+
+    $val1: parseInt($set1);
+    $val2: parseInt($set2);
+    $em: decimal-round(calc-divide($val1, $val2),2);
+    @return $em;
+}
+
+@mixin SVG($name: null, $size: null) {
+    background-image: url(/_assets/images/site/SVG/#{$name}.svg);
+    background-size: $size;
+
+    .no-svg &, .no-smil &, html.ie8 & {
+        //.no-svg/.no-smil classes are added to html tag via modernizer plugin where it cannot browser detect support for SVG/SVG animation
+        background-image: url(/_assets/images/site/SVG/#{$name}.png);
+        background-size: auto;
+    }
+}
+
+//https://gist.github.com/terkel/4373420
+@function decimal-round ($number, $digits: 0, $mode: round) {
+    $n: 1;
+    // $number must be a number
+    @if type-of($number) != number {
+        @warn '#{ $number } is not a number.';
+        @return $number;
+    }
+    // $digits must be a unitless number
+    @if type-of($digits) != number {
+        @warn '#{ $digits } is not a number.';
+        @return $number;
+    }
+    @else if not unitless($digits) {
+        @warn '#{ $digits } has a unit.';
+        @return $number;
+    }
+
+    @for $i from 1 through $digits {
+        $n: $n * 10;
+    }
+
+    @if $mode == round {
+        @return round($number * $n) / $n;
+    }
+    @else if $mode == ceil {
+        @return ceil($number * $n) / $n;
+    }
+    @else if $mode == floor {
+        @return floor($number * $n) / $n;
+    }
+    @else {
+        @warn '#{ $mode } is undefined keyword.';
+        @return $number;
+    }
+}
+
+@function decimal-ceil ($number, $digits: 0) {
+    @return decimal-round($number, $digits, ceil);
+}
+
+//http://hugogiraudel.com/2013/08/08/advanced-sass-list-functions/
+@function to-string($list, $glue: '', $is-nested: false) {
+    $result: null;
+
+    @for $i from 1 through length($list) {
+        $e: nth($list, $i);
+
+        @if type-of($e) == list {
+            $result: unquote("$result#{to-string($e, $glue, true)}");
+        }
+
+        @else {
+            $result: if($i != length($list) or $is-nested, unquote("$result#{$e}#{$glue}"), unquote("$result#{$e}"));
+        }
+    }
+
+    @return $result;
+}
+
+
+@mixin icomoon {
+    @font-face {
+        font-family: 'icomoon';
+        src: url('/_assets/css/site/fonts/icon/icomoon.eot?pmckxa');
+        src: url('/_assets/css/site/fonts/icon/icomoon.eot?#iefixpmckxa') format('embedded-opentype'), url('/_assets/css/site/fonts/icon/icomoon.ttf?pmckxa') format('truetype'), url('/_assets/css/site/fonts/icon/icomoon.woff?pmckxa') format('woff'), url('/_assets/css/site/fonts/icon/icomoon.svg?pmckxa#icomoon') format('svg');
+        font-weight: normal;
+        font-style: normal;
+    }
+}
+
+@mixin fa-font {
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+@mixin iconFont {
+    font-family: 'icomoon';
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    letter-spacing: 0;
+}
+
+//=https://github.com/andrewgrewell
+//==Bless you andrew greweell for
+@function icon($icon-code) {
+    //Outputs character reference for required CSS :pseudo-element ASCII output
+    //WARNING: ensure SASS/SCSS compiler uses libsass 3.2.4+ or SASS 3.4+
+    @return #{"\"\\"}#{$icon-code + "\""};
+    //used mostly for icon characters in font family (icomoon) of which are referenced in _type-colour.scss
+}
+
+@mixin iconMiddle {
+    &:before, &:after {
+        vertical-align: middle;
+        display: inline-block;
+    }
+
+    &:before {
+        max-height: 100%;
+        max-width: 100%;
+    }
+
+    &:after {
+        height: 100%;
+        content: '';
+        width: 1px;
+    }
+}

@@ -1,0 +1,297 @@
+﻿//Each bookmark in this file is preceded by "=="
+
+//==Select
+//Custom <Select> wrapper and styling for design whilst retaining the core functionality of the element
+
+//==Checkbox or ==Radio
+//Custom radio/checkbox wrappers and styling for design whilst retaining the core functionality of the element
+
+//==Newsletter -- Custom inline newsletter style
+
+//==Modifiers
+//Modifier classes for form states (e.g. error/warning/complete)
+
+$frm-type: 'input[type="text"]', 'input[type="email"]', 'input[type="password"]', 'input[type="number"]', 'input[type="tel"]';
+$input-list: to-string($frm-type, ',');
+
+.form {
+	position: relative;
+}
+
+//Styles for the placeholder attributes of text input fields
+@include placeholder {
+	color: #888;
+	@include anim(200ms, (all));
+}
+//Styles placeholder when text input is on :focus state
+@include placeholderFocus {
+	opacity: .5;
+}
+
+.form__lbl {
+	font-weight: 700;
+}
+
+//attach to element that triggers form action
+//<button> / <input type="submit"> etc
+.form__submit {
+	display: inline-block;
+	vertical-align: middle;
+	color: white;
+	background: $clr-primary;
+	padding: .9rem 2rem;
+	text-transform: uppercase;
+
+	&:hover {
+		background: darken($clr-primary, 15%);
+	}
+}
+
+.form__col {
+	//padding: 5px;
+	position: relative;
+}
+
+//Typed input fields (text/password/email/TEXTAREA)...
+.input__txt {
+	width: 100%;
+}
+
+input.input__txt {
+	//given height, browsers will render the correct line-height
+	//no need for vertical padding
+	height: 35px;
+	padding: 0 10px;
+
+	&[type="number"] {
+		padding-right: 0;
+	}
+}
+
+textarea.input__txt {
+	height: 10em;
+	max-height: 10em;
+	padding: 10px;
+	max-width: 100%;
+}
+
+.input__wrap {
+	position: relative;
+	display: table;
+	width: 100%;
+
+	.input__txt {
+		display: table-cell;
+		vertical-align: middle;
+	}
+
+	&[class*=ico_] {
+		padding: 0;
+
+		input {
+			padding-left: 50px;
+		}
+	}
+}
+//==Select -- Custom <Select> Wrapper
+//<div class="select"><span></span><select>....</select></div>
+.select {
+	position: relative;
+	width: 100%;
+
+	&, .select {
+		height: 35px;
+	}
+
+	select {
+		background: #fff;
+		color: $clr-primary;
+		opacity: 0;
+		z-index: 3;
+		position: relative;
+	}
+
+	select, span {
+		padding: 0 30px 0 10px;
+		width: 100%;
+		height: 100%;
+	}
+
+	&:after {
+		content: "\f0dc";
+		@include fa-font;
+		width: 30px;
+		position: absolute;
+		top: 0;
+		height: 100%;
+		right: 0;
+		text-align: center;
+	}
+
+	span {
+		position: absolute;
+		z-index: 1;
+		left: 0;
+		top: 0;
+		overflow: hidden;
+	}
+
+	&:after, span {
+		line-height: 35px;
+	}
+
+	.input--sml & {
+		width: auto;
+		display: inline-block;
+		vertical-align: middle;
+	}
+}
+
+//==Checkbox ==Radio -- Custom <input type="checkbox/radio"> wrapper
+.input__chk {
+	margin: 5px;
+	position: relative;
+	display: inline-block;
+	vertical-align: top;
+
+	input, label {
+		cursor: pointer;
+	}
+
+	input, label:before {
+		position: absolute;
+		left: 0;
+		top: 50%;
+		height: 2.1rem;
+		width: 2.1rem;
+		margin-top: -1rem;
+	}
+
+	input {
+		opacity: 0;
+		height: 3rem;
+	}
+
+	label {
+		padding-left: 30px;
+		position: relative;
+		display: block;
+
+		&:before {
+			content: '\02022';
+			font-size: 29px;
+			line-height: 22px;
+			font-family: Arial;
+			background: $clr-grey;
+			color: transparent;
+			text-align: center;
+			//line-height: 20px;
+		}
+	}
+
+
+	[type="radio"] ~ label:before {
+		border-radius: 5px;
+	}
+
+	[type="checkbox"] ~ label:before {
+		border-radius: 50%;
+	}
+
+	&.checked label:before {
+		background-color: $clr-primary;
+		color: white;
+	}
+	//This generates a full button style without the little checker box
+	&.lbl--hidden {
+		margin: auto;
+		box-shadow: 0 0 0 1px #ccc;
+
+		label:before {
+			display: none;
+		}
+
+		label {
+			padding: .5rem 1rem;
+		}
+
+		&.checked {
+			background: $clr-primary;
+			color: white;
+		}
+	}
+}
+
+
+.input-sml {
+
+	.input_wrap {
+		width: 200px;
+	}
+}
+
+.input--split {
+	border-collapse: separate;
+	border-spacing: 10px 0;
+
+	.input__wrap {
+		width: 50px;
+		margin-right: 10px;
+
+		&:after {
+			width: 10px;
+		}
+	}
+}
+
+.form--ico {
+	width: 40px;
+	background: $clr-grey;
+}
+
+.form--state {
+	width: 35px;
+}
+
+//==Newsletter -- Custom inline newsletter style
+.form--newsletter {
+	text-align: center;
+
+	.form__col {
+		display: inline-block;
+		vertical-align: middle;
+	}
+
+	.submit {
+		width: 20rem; //same as input-sml
+	}
+
+	.title {
+		margin: .5rem;
+	}
+}
+//==Modifiers
+.input__wrap, .select {
+	box-shadow: 0 0 0 1px #ccc;
+}
+
+.input {
+	//input--warning, input--complete, input--error
+	&--warning,
+	&--complete,
+	&--error {
+		padding-right: 35px;
+	}
+	//input--error
+	&--error {
+		box-shadow: 0 0 0 1px $clr-form-red;
+	}
+	//input--complete
+	&--complete {
+		box-shadow: 0 0 0 1px $clr-form-green;
+	}
+	//input--warning
+	&--warning {
+		box-shadow: 0 0 0 1px $clr-form-orange;
+	}
+}
